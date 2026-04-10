@@ -1,0 +1,698 @@
+
+/* ============================================================
+   RESET
+   ============================================================ */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #000;
+    color: #111;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
+}
+
+button { font-family: inherit; cursor: pointer; }
+
+/* ============================================================
+   SETTINGS PAGE
+   ============================================================ */
+.settings-page {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #f5f5f7;
+    z-index: 9999;
+    overflow-y: auto;
+}
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: #fff;
+    border-bottom: 1px solid #e3e3e3;
+    position: sticky;
+    top: 0;
+}
+
+.settings-header h1 {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4ecdc4;
+}
+
+.back-btn svg { width: 22px; height: 22px; }
+
+.settings-content { padding: 16px; }
+
+.settings-section {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e3e3e3;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.settings-section-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    letter-spacing: 0.07em;
+    padding: 12px 16px 4px;
+}
+
+.settings-field {
+    padding: 10px 16px 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.settings-field:last-child { border-bottom: none; }
+
+.settings-field label {
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.settings-field input {
+    width: 100%;
+    padding: 9px 12px;
+    background: #f5f5f7;
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+    color: #111;
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+}
+
+.settings-field input:focus { border-color: #4ecdc4; }
+
+.settings-field select {
+    width: 100%;
+    padding: 9px 12px;
+    background: #f5f5f7;
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+    color: #111;
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%239ca3af' d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+.speed-toggle {
+    display: flex;
+    gap: 8px;
+}
+
+.speed-btn {
+    flex: 1;
+    padding: 9px 0;
+    background: #f5f5f7;
+    border: 1.5px solid transparent;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    color: #9ca3af;
+    cursor: pointer;
+}
+
+.speed-btn.active {
+    background: #fff;
+    border-color: #111;
+    color: #111;
+}
+
+.push-btn {
+    width: 100%;
+    padding: 12px;
+    background: #4ecdc4;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    margin-top: 4px;
+    cursor: pointer;
+}
+
+
+.save-btn {
+    width: 100%;
+    padding: 14px;
+    background: #111;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 48px;
+}
+
+/* ============================================================
+   MAIN APP
+   ============================================================ */
+#mainPage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin-top: calc(50px + env(safe-area-inset-top, 0px));
+    background: #fff;
+    border-top-left-radius: 26px;
+    border-top-right-radius: 26px;
+}
+
+/* ============================================================
+   BLACK HEADER
+   ============================================================ */
+.app-header {
+    background: #000;
+    padding: 12px 16px;
+    padding-top: calc(12px + env(safe-area-inset-top, 0px));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Teal logo tile */
+.logo-tile {
+    width: 32px;
+    height: 32px;
+    background: #4ecdc4;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+#logoText {
+    color: #000;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.store-name {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bell-btn {
+    background: none;
+    border: none;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    flex-shrink: 0;
+    margin-right: 4px;
+}
+
+.bell-btn svg { width: 22px; height: 22px; }
+
+/* Purple avatar circle */
+.avatar-circle {
+    width: 32px;
+    height: 32px;
+    background: #9b59b6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+#avatarInitials {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+/* ============================================================
+   WHITE CONTENT WRAPPER
+   ============================================================ */
+.content-wrapper {
+    flex: 1;
+    background: transparent;
+    overflow-y: scroll;
+}
+
+.content-wrapper.ptr-snap {
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ptr-spinner {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    top: calc(env(safe-area-inset-top, 0px) + 62px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    z-index: 51;
+}
+
+.ptr-spinner.visible { opacity: 1; }
+
+.spinner {
+    font-size: 36px;
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+}
+
+.spinner .spinner-blade {
+    position: absolute;
+    left: 0.43em;
+    bottom: 0;
+    width: 0.084em;
+    height: 0.2777em;
+    border-radius: 0.5em;
+    background-color: transparent;
+    transform-origin: center -0.11em;
+    animation: spinner-fade 1s infinite linear;
+}
+
+.spinner .spinner-blade:nth-child(1) { transform: rotate(0deg);   animation-delay: 0s; }
+.spinner .spinner-blade:nth-child(2) { transform: rotate(45deg);  animation-delay: 0.125s; }
+.spinner .spinner-blade:nth-child(3) { transform: rotate(90deg);  animation-delay: 0.25s; }
+.spinner .spinner-blade:nth-child(4) { transform: rotate(135deg); animation-delay: 0.375s; }
+.spinner .spinner-blade:nth-child(5) { transform: rotate(180deg); animation-delay: 0.5s; }
+.spinner .spinner-blade:nth-child(6) { transform: rotate(225deg); animation-delay: 0.625s; }
+.spinner .spinner-blade:nth-child(7) { transform: rotate(270deg); animation-delay: 0.75s; }
+.spinner .spinner-blade:nth-child(8) { transform: rotate(315deg); animation-delay: 0.875s; }
+
+@keyframes spinner-fade {
+    0%   { background-color: #69717d; }
+    100% { background-color: transparent; }
+}
+
+/* ============================================================
+   FILTER ROW
+   ============================================================ */
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 24px 16px 10px;
+}
+
+.filter-btn,
+.live-btn,
+.report-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    background: #ebebeb;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #111;
+    font-weight: 600;
+    white-space: nowrap;
+    height: 26px;
+}
+
+.chevron {
+    font-size: 10px;
+    color: #888;
+}
+
+.live-dot {
+    width: 7px;
+    height: 7px;
+    background: #22c55e;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.report-btn {
+    margin-left: auto;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 5px 8px;
+}
+
+.report-btn svg { width: 13px; height: 13px; }
+
+/* ============================================================
+   METRICS VIEWPORT (slide+fade carousel)
+   ============================================================ */
+#metricsViewport {
+    position: relative;
+    overflow: hidden;
+}
+
+#panelA {
+    will-change: transform, opacity;
+}
+
+#panelB {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+/* ============================================================
+   STATS ROW
+   ============================================================ */
+.stats-row {
+    display: flex;
+    padding: 6px 16px 32px;
+    gap: 0;
+}
+
+.stat-col {
+    flex: 1;
+    min-width: 0;
+}
+
+.stat-col.center { text-align: left; padding-left: 120px; }
+.stat-col.right  { text-align: right; }
+
+.stat-label {
+    font-size: 12px;
+    color: #9ca3af;
+    font-weight: 600;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stat-col:first-child .stat-label {
+    font-weight: 700;
+    color: #111;
+}
+
+.stat-val {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+/* Muted value (Orders, Conversion) */
+.stat-val.muted {
+    color: #9ca3af;
+    font-weight: 600;
+}
+
+/* ============================================================
+   CHART
+   ============================================================ */
+.chart-area {
+    padding: 16px 12px 0;
+}
+
+/* ============================================================
+   PROMO CARD
+   ============================================================ */
+.promo-card {
+    padding: 24px 16px 4px;
+}
+
+.promo-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.promo-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.3;
+    flex: 1;
+}
+
+.promo-menu-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #9ca3af;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.promo-menu-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.promo-card-desc {
+    font-size: 14px;
+    font-weight: 700;
+    color: #4b5563;
+    line-height: 1.5;
+    margin-bottom: 14px;
+}
+
+.promo-learn-btn {
+    width: 100%;
+    padding: 13px;
+    background: #fff;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    font-family: inherit;
+}
+
+/* ============================================================
+   ACTION BOXES
+   ============================================================ */
+.action-section {
+    padding: 0 16px 0;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.action-box {
+    background: #f7f7f7;
+    border-radius: 10px;
+    padding: 10px 10px 10px;
+    position: relative;
+    min-height: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.action-icon {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.action-num {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    display: block;
+    margin-bottom: 1px;
+}
+
+.action-label {
+    font-size: 11px;
+    color: #111;
+    font-weight: 700;
+}
+
+/* ============================================================
+   "THAT'S IT FOR NOW" EMPTY STATE CARD
+   ============================================================ */
+.empty-card {
+    background: #f4f4f5;
+    border-radius: 14px;
+    margin: 6px 16px 0;
+    padding: 32px 24px 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+.empty-icon {
+    width: 32px;
+    height: 32px;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.empty-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.3;
+}
+
+.empty-desc {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+    max-width: 280px;
+}
+
+/* ============================================================
+   FLOATING PILL BOTTOM NAVIGATION
+   ============================================================ */
+.bottom-nav {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 100;
+    width: calc(100% - 48px);
+    max-width: 380px;
+}
+
+/* Center pill */
+.nav-center-pill {
+    flex: 1;
+    background: #fff;
+    border-radius: 40px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 6px 8px;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 22px;
+    color: #9ca3af;
+    flex-shrink: 0;
+}
+
+.nav-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+.nav-btn.active svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Edge buttons (search + AI): standalone circles */
+.nav-btn-edge {
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.08);
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+}
+
+.nav-btn-edge svg {
+    width: 28px;
+    height: 28px;
+}
+
+.nav-btn-ai svg {
+    width: 22px;
+    height: 22px;
+}
+
+.nav-btn-menu svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Active home: gray circle */
+.nav-btn.active {
+    background: #e8e8e8;
+    color: #111;
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+}
