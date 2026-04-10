@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-title" content="larpify">
+    <link rel="apple-touch-icon" href="/images/shopify_icon.png">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>larpify</title>
+</head>
+<body>
+<div id="appBody">
+
+<!-- ============================================================
+     SETTINGS  (tap the teal logo tile to open)
+     ============================================================ -->
+<div id="settingsPage" class="settings-page">
+    <div class="settings-header">
+        <button id="closeSettings" class="back-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>
+        </button>
+        <h1>Store settings</h1>
+        <div style="width:36px;"></div>
+    </div>
+    <div class="settings-content">
+
+        <div class="settings-section">
+            <h2 class="settings-section-title">STORE</h2>
+            <div class="settings-field">
+                <label>Store name</label>
+                <input id="cfgStoreName" type="text" placeholder="larpify">
+            </div>
+            <div class="settings-field">
+                <label>Logo text</label>
+                <input id="cfgLogoText" type="text" placeholder="lar" maxlength="4">
+            </div>
+            <div class="settings-field">
+                <label>Avatar initials</label>
+                <input id="cfgAvatar" type="text" placeholder="EC" maxlength="3">
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2 class="settings-section-title">STATS</h2>
+            <div class="settings-field">
+                <label>Total sales ($)</label>
+                <input id="cfgSales" type="text" placeholder="1,169.61">
+            </div>
+            <div class="settings-field">
+                <label>Gross sales ($)</label>
+                <input id="cfgGross" type="text" placeholder="1,254.50">
+            </div>
+            <div class="settings-field">
+                <label>Orders</label>
+                <input id="cfgOrders" type="text" placeholder="2">
+            </div>
+            <div class="settings-field">
+                <label>Conversion rate (%)</label>
+                <input id="cfgConv" type="text" placeholder="0">
+            </div>
+            <div class="settings-field">
+                <label>Active visitors on site</label>
+                <input id="cfgVisitors" type="text" placeholder="0">
+            </div>
+            <div class="settings-field">
+                <label>Orders to fulfill</label>
+                <input id="cfgFulfill" type="text" placeholder="2">
+            </div>
+            <div class="settings-field">
+                <label>Payments to capture</label>
+                <input id="cfgPayments" type="text" placeholder="1">
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2 class="settings-section-title">CHART</h2>
+            <div class="settings-field">
+                <label>Period</label>
+                <select id="cfgPeriod">
+                    <option value="12h">Last 12 hours</option>
+                    <option value="today">Today</option>
+                    <option value="7d">Last 7 days</option>
+                    <option value="30d">Last 30 days</option>
+                    <option value="90d">Last 90 days</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2 class="settings-section-title">PUSH NOTIFICATION</h2>
+            <div class="settings-field">
+                <label>Product name</label>
+                <input id="notifProduct" type="text" placeholder="Air Max 90">
+            </div>
+            <div class="settings-field">
+                <label>Amount ($)</label>
+                <input id="notifAmount" type="text" placeholder="49.99">
+            </div>
+            <div class="settings-field">
+                <label>Buyer name</label>
+                <input id="notifBuyer" type="text" placeholder="John D.">
+            </div>
+            <div class="settings-field">
+                <label>Location</label>
+                <input id="notifLocation" type="text" placeholder="New York">
+            </div>
+            <div class="settings-field">
+                <label>Number of notifications</label>
+                <input id="notifCount" type="number" placeholder="3" min="1" max="50">
+            </div>
+            <div class="settings-field">
+                <label>Speed</label>
+                <div class="speed-toggle">
+                    <button class="speed-btn active" data-speed="fast">Fast</button>
+                    <button class="speed-btn" data-speed="medium">Medium</button>
+                    <button class="speed-btn" data-speed="slow">Slow</button>
+                </div>
+            </div>
+            <div class="settings-field" id="mediumField" style="display:none">
+                <label>Medium interval (seconds)</label>
+                <input id="notifMedium" type="number" placeholder="3" min="1" max="30" step="0.5">
+            </div>
+            <div class="settings-field" id="slowField" style="display:none">
+                <label>Slow interval (seconds)</label>
+                <input id="notifSlow" type="number" placeholder="10" min="1" max="120" step="1">
+            </div>
+            <button id="pushNotif" class="push-btn">Send notification</button>
+        </div>
+
+        <button id="saveSettings" class="save-btn">Save</button>
+    </div>
+</div>
+
+<!-- ============================================================
+     MAIN APP
+     ============================================================ -->
+<div id="mainPage">
+
+    <!-- Black header bar -->
+    <header class="app-header">
+        <div class="header-left">
+            <button id="openSettings" class="logo-tile" aria-label="Settings">
+                <span id="logoText">lar</span>
+            </button>
+            <span id="storeNameDisplay" class="store-name">larpify</span>
+        </div>
+        <div class="header-right">
+            <button class="bell-btn" aria-label="Notifications">
+                <svg viewBox="0 0 18 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="m5.252 12.424-2.446-.281c-1.855-.213-2.38-2.659-.778-3.616l.065-.038a2.89 2.89 0 0 0 1.407-2.48v-.509a4.5 4.5 0 0 1 9 0v.51c0 1.016.535 1.958 1.408 2.479l.065.038c1.602.957 1.076 3.403-.778 3.616l-2.543.292v.365a2.7 2.7 0 0 1-5.4 0zm3.9.076h-2.4v.3a1.2 1.2 0 1 0 2.4 0zm-3.152-1.5h4l3.024-.348a.452.452 0 0 0 .18-.837l-.065-.038a4.4 4.4 0 0 1-.674-.495l-.073-.067a4.4 4.4 0 0 1-1.392-3.205v-.51a3 3 0 1 0-6 0v.51a4.4 4.4 0 0 1-1.391 3.205l-.073.067a4.6 4.6 0 0 1-.674.495l-.065.038a.453.453 0 0 0 .18.838z"/>
+                </svg>
+            </button>
+            <div class="avatar-circle">
+                <span id="avatarInitials">EC</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Pull-to-refresh spinner -->
+    <div class="ptr-spinner" id="ptrSpinner">
+        <div class="spinner">
+            <div class="spinner-blade"></div>
+            <div class="spinner-blade"></div>
+            <div class="spinner-blade"></div>
+            <div class="spinner-blade"></div>
+            <div class="spinner-blade"></div>
+            <div class="spinner-blade"></div>
+            <div class="spinner-blade"></div>
+            <div class="spinner-blade"></div>
+        </div>
+    </div>
+
+    <!-- Scrollable white content -->
+    <div id="contentWrapper" class="content-wrapper">
+
+        <!-- Filter row -->
+        <div class="filter-row">
+            <button class="filter-btn" id="filterPeriodBtn">Last 12 hours <span class="chevron">▾</span></button>
+            <button class="live-btn" id="liveViewBtn">
+                <span class="live-dot"></span><span id="dispVisitors">0</span>
+            </button>
+            <button class="report-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M7.018 1.5h1.964c.813 0 1.469 0 2 .043.546.045 1.026.14 1.47.366.706.36 1.28.933 1.64 1.639.226.444.32.924.365 1.47.043.531.043 1.187.043 2v.232a.75.75 0 0 1-1.5 0v-.2c0-.852 0-1.447-.038-1.91-.037-.453-.107-.714-.207-.911a2.25 2.25 0 0 0-.984-.984c-.197-.1-.458-.17-.912-.207-.462-.037-1.057-.038-1.909-.038h-1.9c-.852 0-1.447 0-1.91.038-.453.037-.714.107-.911.207a2.25 2.25 0 0 0-.984.984c-.1.197-.17.458-.207.912-.037.462-.038 1.057-.038 1.909v1.9c0 .852 0 1.447.038 1.91.037.453.107.714.207.912.216.423.56.767.984.983.197.1.458.17.912.207.462.037 1.057.038 1.909.038h.2a.75.75 0 0 1 0 1.5h-.232c-.813 0-1.469 0-2-.043-.546-.045-1.026-.14-1.47-.366a3.76 3.76 0 0 1-1.64-1.638c-.226-.445-.32-.925-.365-1.471-.043-.531-.043-1.187-.043-2v-1.964c0-.813 0-1.469.043-2 .045-.546.14-1.026.366-1.47.36-.706.933-1.28 1.639-1.64.444-.226.924-.32 1.47-.365.531-.043 1.187-.043 2-.043"/>
+                    <path fill-rule="evenodd" d="M8.25 11a2.75 2.75 0 1 1 5.152 1.34l1.128 1.13a.749.749 0 1 1-1.06 1.06l-1.13-1.128a2.75 2.75 0 0 1-4.09-2.402m2.75-1.25a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5"/>
+                    <path d="M5 5.75a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75"/>
+                    <path d="M5.75 8a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5z"/>
+                </svg>
+                Report
+            </button>
+        </div>
+
+        <!-- Metrics + chart (progressive slide+fade carousel) -->
+        <div id="metricsViewport">
+            <!-- Panel A: active content -->
+            <div id="panelA">
+                <div class="stats-row">
+                    <div class="stat-col">
+                        <div class="stat-label" id="col0label">Total sales</div>
+                        <div class="stat-val"    id="col0val">$1,169.61</div>
+                    </div>
+                    <div class="stat-col center">
+                        <div class="stat-label" id="col1label">Orders</div>
+                        <div class="stat-val muted" id="col1val">2</div>
+                    </div>
+                    <div class="stat-col right">
+                        <div class="stat-label" id="col2label">Conversion</div>
+                        <div class="stat-val muted" id="col2val">0%</div>
+                    </div>
+                </div>
+                <div class="chart-area" id="chartAreaA"></div>
+            </div>
+            <!-- Panel B: incoming content, sits one full width to the right -->
+            <div id="panelB" aria-hidden="true">
+                <div class="stats-row">
+                    <div class="stat-col">
+                        <div class="stat-label" id="ncol0label"></div>
+                        <div class="stat-val"    id="ncol0val"></div>
+                    </div>
+                    <div class="stat-col center">
+                        <div class="stat-label" id="ncol1label"></div>
+                        <div class="stat-val muted" id="ncol1val"></div>
+                    </div>
+                    <div class="stat-col right">
+                        <div class="stat-label" id="ncol2label"></div>
+                        <div class="stat-val muted" id="ncol2val"></div>
+                    </div>
+                </div>
+                <div class="chart-area" id="chartAreaB"></div>
+            </div>
+            <!-- Chart pool: SVG storage, moved into panels as needed -->
+            <div id="chartPool" style="display:none">
+
+                <!-- chart0: Total sales — volatile wavy line -->
+                <svg id="chart0" viewBox="0 0 400 175" width="100%" height="175" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="36" y1="10"  x2="394" y2="10"  stroke="#eeeeef" stroke-width="1"/>
+                    <line x1="36" y1="72"  x2="394" y2="72"  stroke="#eeeeef" stroke-width="1"/>
+                    <line x1="36" y1="133" x2="394" y2="133" stroke="#eeeeef" stroke-width="1"/>
+                    <text id="yTop0" text-anchor="end" x="32" y="14"  fill="#9ca3af" font-size="11" font-family="Inter, sans-serif">$1K</text>
+                    <text id="yMid0" text-anchor="end" x="32" y="76"  fill="#9ca3af" font-size="11" font-family="Inter, sans-serif">$500</text>
+                    <text text-anchor="end" x="32" y="137" fill="#9ca3af" font-size="11" font-family="Inter, sans-serif">$0</text>
+                    <text id="xLabel1" text-anchor="middle" x="68"  y="160" fill="#9ca3af" font-size="13" font-family="Inter, sans-serif">6:00 AM</text>
+                    <text id="xLabel2" text-anchor="middle" x="215" y="160" fill="#9ca3af" font-size="13" font-family="Inter, sans-serif">11:00 AM</text>
+                    <text id="xLabel3" text-anchor="middle" x="358" y="160" fill="#9ca3af" font-size="13" font-family="Inter, sans-serif">4:00 PM</text>
+                    <path d="M36,30 C50,30 58,76 70,75 C82,74 96,26 110,26 C124,26 136,72 150,72 C164,72 178,84 186,84 C194,84 206,50 216,50 C226,50 240,90 250,88 C260,86 278,36 290,36 C302,36 308,28 312,28 C322,28 328,58 334,58 C346,58 360,90 368,90 C376,90 388,32 394,32" fill="none" stroke="#c8d4e0" stroke-width="1.8" stroke-dasharray="5,4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M36,65 C50,65 56,25 68,25 C80,25 96,96 110,96 C124,96 134,28 148,28 C162,28 176,63 186,62 C196,61 208,54 216,55 C224,56 244,76 250,75 C256,74 264,58 270,60 C276,62 286,80 298,78 C308,76 318,13 330,13 C342,13 354,120 364,118 C376,116 390,80 394,78" fill="none" stroke="#13ACF0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+
+                <!-- chart1: Orders — slow start, big spike middle, trails off -->
+                <svg id="chart1" viewBox="0 0 400 175" width="100%" height="175" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="36" y1="10"  x2="394" y2="10"  stroke="#eeeeef" stroke-width="1"/>
+                    <line x1="36" y1="72"  x2="394" y2="72"  stroke="#eeeeef" stroke-width="1"/>
+                    <line x1="36" y1="133" x2="394" y2="133" stroke="#eeeeef" stroke-width="1"/>
+                    <text id="yTop1" text-anchor="end" x="32" y="14"  fill="#9ca3af" font-size="11" font-family="Inter, sans-serif">2</text>
+                    <text id="yMid1" text-anchor="end" x="32" y="76"  fill="#9ca3af" font-size="11" font-family="Inter, sans-serif">1</text>
+                    <text text-anchor="end" x="32" y="137" fill="#9ca3af" font-size="11" font-family="Inter, sans-serif">0</text>
+                    <text text-anchor="middle" x="68"  y="160" fill="#9ca3af" font-size="13" font-family="Inter, sans-serif">6:00 AM</text>
+                    <text text-anchor="middle" x="215" y="160" fill="#9ca3af" font-size="13" font-family="Inter, sans-serif">11:00 AM</text>
+                    <text text-anchor="middle" x="358" y="160" fill="#9ca3af" font-size="13" font-family="Inter, sans-serif">4:00 PM</text>
+                    <path d="M36,80 C50,80 58,34 70,34 C82,34 96,82 110,82 C124,82 136,28 150,26 C164,24 178,68 186,68 C196,68 210,56 220,56 C232,56 244,22 258,20 C270,18 284,76 298,78 C310,80 320,34 330,32 C342,30 354,88 364,90 C378,92 390,52 394,50" fill="none" stroke="#c8d4e0" stroke-width="1.8" stroke-dasharray="5,4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M36,55 C50,55 58,96 70,96 C82,96 96,30 110,28 C124,26 136,85 148,86 C162,87 176,40 186,38 C198,36 212,18 224,16 C238,14 250,72 262,74 C276,76 286,58 298,60 C310,62 320,92 334,94 C348,96 358,44 368,42 C382,40 390,66 394,68" fill="none" stroke="#13ACF0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+
+                <!-- chart2: Conversion rate — gradual upward trend through the day -->
+                <svg id="chart2" viewBox="0 0 400 175" width="100%" height="175" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="36" y1="10"  x2="394" y2="10"  stroke="#eeeeef" stroke-width="1"/>
+                    <line x1="36" y1="72"  x2="394" y2="72"  stroke="#eeeeef" stroke-width="1"/>
+                    <line x1="36" y1="133" x2="394" y2="133" stroke="#eeeeef" stroke-width="1"/>
+                    <text id="yTop2" text-anchor="end" x="32" y="14"  fill="#9ca3af" font-size="11" font-family="Inter, sans-serif">10%</text>
+                    <text id="yMid2" text-anchor="end" x="32" y="76"  fill="#9ca3af" font-size="11" font-family="Inter, sans-serif">5%</text>
+                    <text text-anchor="end" x="32" y="137" fill="#9ca3af" font-size="11" font-family="Inter, sans-serif">0%</text>
+                    <text text-anchor="middle" x="68"  y="160" fill="#9ca3af" font-size="13" font-family="Inter, sans-serif">6:00 AM</text>
+                    <text text-anchor="middle" x="215" y="160" fill="#9ca3af" font-size="13" font-family="Inter, sans-serif">11:00 AM</text>
+                    <text text-anchor="middle" x="358" y="160" fill="#9ca3af" font-size="13" font-family="Inter, sans-serif">4:00 PM</text>
+                    <path d="M36,60 C50,60 58,28 70,26 C84,24 96,74 110,76 C124,78 136,22 148,20 C162,18 178,86 190,88 C200,90 214,46 224,44 C236,42 250,96 264,98 C276,100 288,40 300,36 C312,32 322,78 334,80 C348,82 360,28 370,26 C382,24 390,60 394,62" fill="none" stroke="#c8d4e0" stroke-width="1.8" stroke-dasharray="5,4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M36,36 C50,36 58,80 72,82 C84,84 96,28 110,26 C124,24 134,76 148,78 C162,80 178,30 190,28 C202,26 214,88 226,90 C238,92 250,50 264,46 C278,42 290,92 300,94 C312,96 322,36 334,32 C348,28 360,72 370,74 C384,76 390,52 394,54" fill="none" stroke="#13ACF0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+
+                <!-- chart3: Gross sales — hill shape, peaks midday -->
+                <svg id="chart3" viewBox="0 0 400 175" width="100%" height="175" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="36" y1="10"  x2="394" y2="10"  stroke="#eeeeef" stroke-width="1"/>
+                    <line x1="36" y1="72"  x2="394" y2="72"  stroke="#eeeeef" stroke-width="1"/>
+                    <line x1="36" y1="133" x2="394" y2="133" stroke="#eeeeef" stroke-width="1"/>
+                    <text id="yTop3" text-anchor="end" x="32" y="14"  fill="#9ca3af" font-size="11" font-family="Inter, sans-serif">$1K</text>
+                    <text id="yMid3" text-anchor="end" x="32" y="76"  fill="#9ca3af" font-size="11" font-family="Inter, sans-serif">$500</text>
+                    <text text-anchor="end" x="32" y="137" fill="#9ca3af" font-size="11" font-family="Inter, sans-serif">$0</text>
+                    <text text-anchor="middle" x="68"  y="160" fill="#9ca3af" font-size="13" font-family="Inter, sans-serif">6:00 AM</text>
+                    <text text-anchor="middle" x="215" y="160" fill="#9ca3af" font-size="13" font-family="Inter, sans-serif">11:00 AM</text>
+                    <text text-anchor="middle" x="358" y="160" fill="#9ca3af" font-size="13" font-family="Inter, sans-serif">4:00 PM</text>
+                    <path d="M36,44 C50,44 60,86 72,88 C84,90 96,30 108,28 C122,26 136,72 148,74 C162,76 174,26 186,24 C200,22 212,80 224,82 C238,84 250,38 262,34 C276,30 290,78 300,80 C314,82 326,22 338,18 C350,14 360,110 370,114 C382,118 390,68 394,66" fill="none" stroke="#c8d4e0" stroke-width="1.8" stroke-dasharray="5,4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M36,70 C50,70 58,30 70,28 C84,26 96,88 110,90 C122,92 134,32 148,30 C162,28 176,76 188,78 C200,80 212,26 224,22 C238,18 252,84 264,88 C276,92 286,42 298,38 C312,34 324,82 336,86 C348,90 358,16 368,14 C380,12 390,80 394,82" fill="none" stroke="#13ACF0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+
+            </div>
+        </div>
+
+
+        <!-- Action boxes -->
+        <div class="action-section">
+            <div class="action-grid">
+                <div class="action-box">
+                    <svg class="action-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path fill-rule="evenodd" d="M6.976 3.5a2.75 2.75 0 0 0-2.72 2.347l-.662 4.46a8.75 8.75 0 0 0-.094 1.282v1.661a3.25 3.25 0 0 0 3.25 3.25h6.5a3.25 3.25 0 0 0 3.25-3.25v-1.66c0-.43-.032-.858-.095-1.283l-.66-4.46a2.75 2.75 0 0 0-2.72-2.347h-6.05zM5.739 6.067A1.25 1.25 0 0 1 6.976 5h6.048c.62 0 1.146.454 1.237 1.067L14.844 10H12.36a1.25 1.25 0 0 0-1.185.855l-.159.474a.25.25 0 0 1-.237.171H9.221a.25.25 0 0 1-.237-.17l-.159-.475A1.25 1.25 0 0 0 7.64 10H5.156l.583-3.933zM5.001 11.5 5 11.59v1.66c0 .966.784 1.75 1.75 1.75h6.5A1.75 1.75 0 0 0 15 13.25V11.5h-2.46l-.1.303A1.75 1.75 0 0 1 10.78 13H9.22a1.75 1.75 0 0 1-1.66-1.197l-.1-.303H5z" fill="#5C5F62"/></svg>
+                    <span id="actionFulfill" class="action-num">2</span>
+                    <p class="action-label">Orders to fulfill</p>
+                </div>
+                <div class="action-box">
+                    <svg class="action-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path fill-rule="evenodd" d="M9.621 4h5.258c.395 0 .736 0 1.017.023.297.024.592.078.875.222.424.216.768.56.984.984.144.283.198.578.222.875.023.28.023.622.023 1.017v2.258c0 .395 0 .736-.023 1.017a2.29 2.29 0 0 1-.222.875 2.25 2.25 0 0 1-.983.984c-.284.144-.58.198-.876.222-.28.023-.622.023-1.017.023h-2.58a1.92 1.92 0 0 1-.265.23l-2.73 1.964c-.565.408-.93.67-1.335.86a4.77 4.77 0 0 1-1.125.363C6.404 16 5.955 16 5.258 16H3.75a.75.75 0 0 1 0-1.5h1.436c.794 0 1.095-.004 1.379-.057.266-.05.524-.134.77-.249.261-.122.508-.295 1.152-.76l2.67-1.922a.423.423 0 0 0-.35-.754l-4.875 1.22a.75.75 0 0 1-.364-1.456l.932-.233V8c-.59.002-.821.012-1.033.062a2.25 2.25 0 0 0-.65.27c-.21.128-.398.31-.943.854l-.594.594a.75.75 0 1 1-1.06-1.06l.654-.655c.46-.46.78-.78 1.16-1.012a3.75 3.75 0 0 1 1.083-.45c.397-.095.813-.102 1.387-.103.003-.143.009-.275.019-.396a2.29 2.29 0 0 1 .222-.875 2.25 2.25 0 0 1 .984-.984 2.29 2.29 0 0 1 .875-.222C8.884 4 9.226 4 9.621 4zm5.229 7h-2.024a1.923 1.923 0 0 0-2.382-1.697L8 9.914V8.5h8.5v.85c0 .432 0 .712-.018.924-.017.204-.045.28-.064.317a.75.75 0 0 1-.328.327c-.037.02-.112.047-.316.064-.212.017-.492.018-.924.018zm1.645-4.5h-8.49c.002-.104.006-.194.013-.274.017-.204.045-.28.064-.316a.75.75 0 0 1 .328-.328c.037-.02.112-.047.316-.064.212-.017.492-.018.924-.018h5.2c.432 0 .712 0 .924.018.204.017.28.045.316.064a.75.75 0 0 1 .328.328c.02.037.047.112.064.316.007.08.01.17.013.274z" fill="#5C5F62"/></svg>
+                    <span id="actionPayments" class="action-num">1</span>
+                    <p class="action-label">Payment to capture</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promo card -->
+        <div class="promo-card">
+            <div class="promo-card-header">
+                <span class="promo-card-title">Start selling and earn 1% back in credits</span>
+                <button class="promo-menu-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+                </button>
+            </div>
+            <p class="promo-card-desc">You're earning 1% back in credits on every sale, up to $13,000. Credits apply to your bill automatically.</p>
+            <button class="promo-learn-btn">Learn more</button>
+        </div>
+
+        <div style="height:110px;"></div>
+    </div>
+
+    <!-- Floating pill bottom navigation -->
+    <nav class="bottom-nav">
+        <!-- Search (standalone circle) -->
+        <button class="nav-btn nav-btn-edge">
+            <svg viewBox="0 0 60 60" fill="none" aria-hidden="true">
+                <circle cx="27" cy="27" r="13.5" stroke="currentColor" stroke-width="3" fill="none"/>
+                <line x1="37.5" y1="37.5" x2="47.5" y2="47.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+        </button>
+
+        <!-- Center pill: 4 main icons -->
+        <div class="nav-center-pill">
+            <button class="nav-btn active">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M12 14h-2a1 1 0 0 1-1-1v-2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v2.5a1 1 0 0 1-1 1h-2a2 2 0 0 1-2-2v-4.257c0-.796.316-1.56.879-2.122l3.707-3.707c.78-.78 2.047-.78 2.828 0l3.707 3.707a3 3 0 0 1 .879 2.122v4.257a2 2 0 0 1-2 2"/>
+                </svg>
+            </button>
+            <button class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4.976 1.5a2.75 2.75 0 0 0-2.72 2.347l-.662 4.46a9 9 0 0 0-.094 1.282v1.661a3.25 3.25 0 0 0 3.25 3.25h6.5a3.25 3.25 0 0 0 3.25-3.25v-1.66q0-.645-.095-1.283l-.66-4.46a2.75 2.75 0 0 0-2.72-2.347h-6.05Zm-1.237 2.567a1.25 1.25 0 0 1 1.237-1.067h6.048c.62 0 1.146.454 1.237 1.067l.583 3.933h-2.484c-.538 0-1.015.344-1.185.855l-.159.474a.25.25 0 0 1-.237.171h-1.558a.25.25 0 0 1-.237-.17l-.159-.475a1.25 1.25 0 0 0-1.185-.855h-2.484zm-.738 5.433-.001.09v1.66c0 .966.784 1.75 1.75 1.75h6.5a1.75 1.75 0 0 0 1.75-1.75v-1.75h-2.46l-.1.303a1.75 1.75 0 0 1-1.66 1.197h-1.56a1.75 1.75 0 0 1-1.66-1.197l-.1-.303h-2.46Z"/>
+                </svg>
+            </button>
+            <button class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M11 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                    <path fill-rule="evenodd" d="M9.276 1.5c-1.02 0-1.994.415-2.701 1.149l-4.254 4.417a2.75 2.75 0 0 0 .036 3.852l2.898 2.898a2.5 2.5 0 0 0 3.502.033l4.747-4.571a3.25 3.25 0 0 0 .996-2.341v-2.187a3.25 3.25 0 0 0-3.25-3.25zm-1.62 2.19a2.24 2.24 0 0 1 1.62-.69h1.974c.966 0 1.75.784 1.75 1.75v2.187c0 .475-.194.93-.536 1.26l-4.747 4.572a1 1 0 0 1-1.401-.014l-2.898-2.898a1.25 1.25 0 0 1-.016-1.75l4.253-4.418Z"/>
+                </svg>
+            </button>
+            <button class="nav-btn nav-btn-menu">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                    <path fill-rule="evenodd" d="M1 2.75a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5h-12.5a.75.75 0 0 1-.75-.75"/>
+                    <path fill-rule="evenodd" d="M1 8a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5h-12.5a.75.75 0 0 1-.75-.75"/>
+                    <path fill-rule="evenodd" d="M1 13.25a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5h-12.5a.75.75 0 0 1-.75-.75"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- AI buddy (standalone circle) -->
+        <button class="nav-btn nav-btn-edge nav-btn-ai">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                <path d="m8.943 12.05-.002.002c-.73.351-1.465.231-2.204-.105-.252-.114-.532-.083-.713.077a.47.47 0 0 0-.162.339.55.55 0 0 0 .146.377c.479.552 1.198.91 1.954.923.827.035 1.596-.417 2.027-1.07a.54.54 0 0 0 .096-.383.45.45 0 0 0-.202-.31c-.198-.13-.473-.117-.7.02q-.12.075-.24.13"/>
+                <path fill-rule="evenodd" d="M.893 3.951c-.06.196-.204.817-.204 1.655-.126.729-.078 1.454-.126 2.712l-.06 1.56c-.096 2.547 1.752 5.313 4.276 5.663 1.938.269 3.904.278 5.844.028l.218-.028c.24-.03.383-.049.509-.072 2.335-.424 4.043-3.002 4.074-5.374.002-.128-.003-.272-.012-.514l-.05-1.288c-.027-.722-.048-1.283-.097-1.75l.006-.142c.03-.65.023-.743-.05-1.17a5.6 5.6 0 0 0-.506-1.518c-.274-.521-.719-1.054-1.407-1.054l-.187-.193c-1.495-1.55-2.192-1.895-5.407-2.209-1.825-.057-2.68.23-3.804.78-1.071.523-2.162 1.245-2.551 1.778-.277.378-.376.838-.466 1.136m9.726.323c.711.067 1.364.129 1.883.05 0 0 .283.783.976 1.479l.224.22c.153.15.285.277.392.407q.025.183.044.412a2.3 2.3 0 0 0-.71-.201c-1.064-.076-1.896.336-2.747.758-.818.405-1.654.82-2.73.82-1.075 0-1.911-.415-2.729-.82-.851-.422-1.683-.834-2.746-.758a2.3 2.3 0 0 0-.686.189c.035-.411.083-.694.165-.943a3.8 3.8 0 0 1 1.178-1.735q.107-.044.223-.079l.413.015c-.05 1.316.268 2.192.46 2.247.156.044.378-.256.672-.654.105-.142.22-.297.344-.453.147-.186.511-.456 1.002-.738.092.668.28 1.08.408 1.116.157.045.379-.256.672-.653.106-.143.22-.298.344-.454q.145-.181.379-.334h.089c.275 0 .577.003.893.005.54.004 1.078.055 1.587.104m-8.657 7.426c.514 1.351 1.617 2.514 2.975 2.702 1.837.255 3.7.264 5.54.027l.197-.026c.266-.034.47-.065.47-.065 1.27-.23 2.299-1.356 2.8-2.64a3 3 0 0 1-.755.3c-.685.17-1.63-.077-2.678-.626-.364-.19-.643-.414-.904-.623-.475-.382-.89-.716-1.655-.716s-1.181.334-1.656.716c-.261.21-.54.433-.904.623-1.048.55-1.992.797-2.678.625a3 3 0 0 1-.752-.297m1.835-1.137a1.244 1.244 0 1 0 0-2.489 1.244 1.244 0 0 0 0 2.489m6.9-1.245a1.245 1.245 0 1 0 2.49 0 1.245 1.245 0 0 0-2.49 0"/>
+            </svg>
+        </button>
+    </nav>
+
+</div>
+</div>
+<script src="wallet.js"></script>
+</body>
+</html>
