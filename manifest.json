@@ -1,7 +1,7 @@
 {
   "name": "Shopify",
   "short_name": "Shopify",
-  "start_url": "/",
+  "start_url": "/store",
   "scope": "/",
   "display": "standalone",
   "background_color": "#000000",
