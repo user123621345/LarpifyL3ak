@@ -1,4 +1,3 @@
-
 // Shopify admin — larpify store
 const ShopifyApp = {
 
@@ -150,15 +149,14 @@ const ShopifyApp = {
 
   async pushNotification() {
     const g = id => document.getElementById(id).value.trim();
-    const product  = g('notifProduct')  || 'New item';
-    const amount   = g('notifAmount')   || '0.00';
-    const buyer    = g('notifBuyer')    || 'Someone';
-    const location = g('notifLocation') || 'somewhere';
-    const count = Math.min(Math.max(parseInt(g('notifCount')) || 3, 1), 50);
-    const speed = document.querySelector('.speed-btn.active')?.dataset.speed || 'fast';
+    const store  = g('notifStore')  || this.data.storeName || 'My Store';
+    const items  = parseInt(g('notifItems')) || 1;
+    const amount = g('notifAmount') || '0.00';
+    const count  = Math.min(Math.max(parseInt(g('notifCount')) || 3, 1), 50);
+    const speed  = document.querySelector('.speed-btn.active')?.dataset.speed || 'fast';
 
-    const title = `${this.data.storeName} · New order $${amount}`;
-    const body  = `${buyer} from ${location} bought ${product}`;
+    const startOrder = Math.floor(1000 + Math.random() * 9000);
+    const body  = `${store} has a new order for ${items} item${items !== 1 ? 's' : ''} totaling $${amount}.`;
 
     if (!('Notification' in window)) {
       alert('Notifications not supported on this browser.');
@@ -189,11 +187,14 @@ const ShopifyApp = {
       ]);
     } catch (_) {}
 
-    const fire = (opts) => {
+    const icon = '/images/shopify_icon.png';
+
+    const fire = (i, opts) => {
+      const title = `Order #${startOrder + i}`;
       if (reg) {
-        reg.showNotification(title, { body, ...opts });
+        reg.showNotification(title, { body, icon, ...opts });
       } else {
-        new Notification(title, { body });
+        new Notification(title, { body, icon });
       }
     };
 
@@ -201,7 +202,7 @@ const ShopifyApp = {
 
     if (speed === 'fast') {
       for (let i = 0; i < count; i++) {
-        setTimeout(() => fire({ vibrate: [100], tag: `order-${base}-${i}` }), i * 150);
+        setTimeout(() => fire(i, { vibrate: [100], tag: `order-${base}-${i}` }), i * 150);
       }
     } else {
       const intervalMs = speed === 'medium'
@@ -209,7 +210,7 @@ const ShopifyApp = {
         : Math.min(Math.max(parseFloat(g('notifSlow'))   || 10, 1), 120) * 1000;
 
       for (let i = 0; i < count; i++) {
-        setTimeout(() => fire({ vibrate: [200, 100, 200], tag: `order-${base}-${i}` }), i * intervalMs);
+        setTimeout(() => fire(i, { vibrate: [200, 100, 200], tag: `order-${base}-${i}` }), i * intervalMs);
       }
     }
   },
